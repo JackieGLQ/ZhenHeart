@@ -49,3 +49,118 @@ cd xtuner
 pip install -e '.[all]'  #需要10分钟左右
 ```
 ### 第三步：预处理微调数据集
+-  XTuner单轮对话的数据格式为：
+```text
+[{
+    "conversation":[
+        {
+            "system": "You are an AI asssistant.",
+            "input": "Give three tips for staying healthy.",
+            "output": "1.Eat a balanced diet. 2. Exercise regularly. 3. Get enough sleep."
+        }
+    ]
+},
+{
+    "conversation":[
+        {
+            "system": "You are an AI asssistant.",
+            "input": "How to study English?",
+            "output": "1. Set clear goals. 2. Create a study plan. 3. Build vocabulary. 4. Practice speaking."
+        }
+    ]
+}]
+```
+- 收集的数据集转换到XTuner单轮对话数据格式代码：
+```text
+import json
+
+# 读取数据集文件的内容
+with open('ZenHeart401713.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+
+# 转换格式
+new_data = []
+for conversation in data:
+    new_conversation = {
+        "conversation": [
+            {
+                "system": conversation["system"],
+                "input": conversation["input"],
+                "output": "\n".join(conversation["output"].split("\n"))
+            }
+        ]
+    }
+    new_data.append(new_conversation)
+
+# 保存到新的文件ZenHeartXTuner.json
+with open('ZenHeartXTunerData.json', 'w', encoding='utf-8') as file:
+    json.dump(new_data, file, ensure_ascii=False, indent=4)
+```
+### 第四步：拷贝需要微调的大模型文件
+- 列出XTuner内置的开箱即用的大模型配置文件
+```text
+xtuner list-cfg 
+```
+- 复制InternLM2-chat-7B配置文件到当前data目录下
+```text
+xtuner copy-cfg internlm2_chat_7b_qlora_oasst1_e3 . 
+```
+### 第五步：下载InternLM2-chat-7B模型
+```text
+# 从 modelscope下载internlm2_chat_7b模型文件
+apt install git git-lfs -y #安装git和git-lfs
+mkdir /root/model && cd /root/model #在root目录下创建model目录并切换到model目录下
+git clone https://www.modelscope.cn/Shanghai_AI_Laboratory/internlm2-chat-7b.git
+#切记要查看下模型是否下载或者复制完整
+```
+### 第六步：修改微调的InternLM2-chat-7B配置文件
+&emsp;&emsp;打开微调的大模型配置文件：internlm2_chat_7b_qlora_oasst1_e3_copy.py,找到如下代码并修改。
+```text
+#pretrained_model_name_or_path = 'internlm/internlm2-chat-7b'
+pretrained_model_name_or_path = '/root/model/internlm2-chat-7b'
+
+#data_path = 'timdettmers/openassistant-guanaco'
+data_path = '/root/data/ZenHeartXTunerData.json'
+
+#max_length = 2048
+max_length = 512
+
+#evaluation_freq = 500
+evaluation_freq = 90
+
+SYSTEM = '六祖慧能'
+evaluation_inputs = [
+    '你好','你是谁', '你是由那个大模型微调出来的呢'
+
+#dataset=dict(type=load_dataset, path=data_path),
+dataset=dict(type=load_dataset, path='json', data_files=dict(train=data_path)),
+
+#dataset_map_fn=oasst1_map_fn,
+dataset_map_fn=None,
+```
+### 第七步：开始微调
+```text
+xtuner train internlm2_chat_7b_qlora_oasst1_e3_copy.py
+```
+### 第八步：PTH模型转换为HuggingFace模型
+```text
+#创建一个存放HuggingFace模型文件的目录
+mkdir /root/data/HF
+#指定两个环境变量
+export MKL_SERVICE_FORCE_INTEL=1 
+export MKL_THREADING_LAYER=GNU
+xtuner convert pth_to_hf internlm2_chat_7b_qlora_oasst1_e3_copy.py work_dirs/internlm2_chat_7b_qlora_oasst1_e3_copy/iter_1500.pth HF
+```
+### 第九步：将转换后的HuggingFace adapter文件合并到大语言模型
+```text
+xtuner convert merge /root/model/internlm2-chat-7b /root/data/HF /root/model/merged --max-shard-size 2GB
+```
+### 第十步：与合并后的模型对话
+```text
+# 加载 Adapter 模型对话（Float 16）
+cd /root/model
+xtuner chat ./merged --prompt-template internlm2_chat
+# 4 bit 量化加载
+# xtuner chat ./merged --bits 4 --prompt-template internlm_chat
+```
+### 第十一步：WebDemo对话
