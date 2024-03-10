@@ -1,5 +1,5 @@
 <p align="center">
-![enter image description here](https://github.com/JackieGLQ/ZenHeart/blob/main/image/Logo.png)
+<img width="400px" src="./image/Logo.png" align="center" alt="GitHub Readme Stats" />
 <p align="center">
 ## 📖项目背景
 当今社会节奏加快，竞争加剧，导致不同年龄和社会群体的人们承受了巨大的压力。成年人面临工作压力，大学生忧
