@@ -24,13 +24,13 @@ def load_model(model_version):
     if model or tokenizer:
         del model, tokenizer
     if model_version == "禅心·明镜V1.0":
-        model_path = "./model"
+        model_path = "./LaoGao/ZhenHeart"
         system = system_1
    # elif model_version == "Internlm2-chat-7b":
    #     model_path = "/root/model/internlm2-chat-7b"
    #     system = system_2
     else:
-        model_path = "./model"
+        model_path = "./LaoGao/ZhenHeart"
         system = system_1
     model = (
         AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True)
