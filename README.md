@@ -1,4 +1,6 @@
+<p align="center">
 ![enter image description here](https://github.com/JackieGLQ/ZenHeart/blob/main/image/Logo.png)
+<p align="center">
 ## 📖项目背景
 当今社会节奏加快，竞争加剧，导致不同年龄和社会群体的人们承受了巨大的压力。成年人面临工作压力，大学生忧
 虑就业，年轻人承受情感困扰，创业者面对生存挑战。这些压力不仅影响个人的心理健康，也对社会稳定与和谐构成
