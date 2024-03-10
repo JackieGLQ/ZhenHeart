@@ -1,6 +1,7 @@
 <p align="center">
  <img width="400px" src="./image/Logo.png" align="center" alt="GitHub Readme Stats" />
  <h2 align="center">基于InternLM2-Chat-7B微调的禅心·明镜大模型</h2>
+ <img src="./image/Jiemian.png" align="center" />
 </p> 
 
 ## 📖项目背景
