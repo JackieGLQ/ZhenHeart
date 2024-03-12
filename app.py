@@ -10,7 +10,7 @@ from torch import nn
 from transformers.generation.utils import LogitsProcessorList, StoppingCriteriaList
 from transformers.utils import logging
 
-from transformers import AutoTokenizer, AutoModelForCausalLM  # isort: skip
+from modelscope import AutoTokenizer, AutoModelForCausalLM  # isort: skip
 import torch
 
 system_1 = """
