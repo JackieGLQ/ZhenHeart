@@ -24,7 +24,7 @@ def load_model(model_version):
     if model or tokenizer:
         del model, tokenizer
     if model_version == "禅心·明镜V1.0":
-        model_path = "JakcieGao/ZhenHeartt"
+        model_path = "JakcieGao/ZhenHeart"
         system = system_1
    # elif model_version == "Internlm2-chat-7b":
    #     model_path = "/root/model/internlm2-chat-7b"
