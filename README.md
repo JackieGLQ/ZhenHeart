@@ -18,7 +18,7 @@
 - 第二阶段：文字与图片生成功能
 - 第三阶段：语音交互功能
 - 第四阶段：视频内容生成
-## 👨‍💻开发步骤
+## 👨‍💻微调步骤（运行Demo直接从第十一步开始）
 ### 第一步:数据收集
 &emsp;&emsp;📰经过将近1个星期的整理，整理了1713条数据集！！！数据来源于GPT4.0。
 ```text
@@ -164,3 +164,19 @@ xtuner chat ./merged --prompt-template internlm2_chat
 # xtuner chat ./merged --bits 4 --prompt-template internlm_chat
 ```
 ### 第十一步：WebDemo对话
+- 1、下载代码
+```text
+git clone https://github.com/JackieGLQ/ZhenHeart.git
+```
+- 2、安装依赖
+```text
+pip install -r requirements.txt
+```  
+- 3、下载模型
+```text
+git clone https://www.modelscope.cn/JakcieGao/ZhenHeart.git
+```   
+- 4、运行
+  ```text
+python app.py
+``` 
