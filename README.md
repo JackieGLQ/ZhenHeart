@@ -179,4 +179,7 @@ git clone https://www.modelscope.cn/JakcieGao/ZhenHeart.git
 - 4、运行
 ```text
 python app.py
-``` 
+```
+## 🙏致谢
+- 感谢[上海人工智能实验室](https://www.shlab.org.cn/)提供的算力支持！
+- 感谢[书生·浦语大模型实战营](https://github.com/InternLM/tutorial/)！
